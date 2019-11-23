@@ -35,9 +35,7 @@ http post :8004/actuator/shutdown
 ## release
 
 ```bash
-./mvnw release:clean release:prepare release:perform \
-    -DgenerateBackupPoms=false \
-    --batch-mode
+./mvnw release:clean release:prepare release:perform --batch-mode
 # ./mvnw release:rollback
 ```
 
