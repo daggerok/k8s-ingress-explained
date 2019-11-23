@@ -1,0 +1,66 @@
+env:
+  global:
+    - TERM=dumb
+    #- secure: "Mc+HCf8MmK28kZwaZ7YZox9qAlCP81pLLQVQMCH9yxCwFBUJlxO0+jsimoMhe6K9hi0WE1pS6Qa6+v0GdZ0+FmIlX1sQh5X64NCjCZHY3lcnFoPI8FSspgp0jRNd0Y1DPBWeLsuM2kmw9oaeQ8kqR7RYXLvkEHYfqbip1RkPRzfTJnB9OCdxWGfPrahD5idRyx2dfhw176vGF8h5aeTaajNvLhBGae2OerbEO0S4tf0jGUTVOJSPCJo2tcaCFIUcS+4fgNkqace4vtY7ZgJUstPpG6Ajj5lHFhfjEQrXlsn5Wv5eflvrO8XkXPGGC9Ttbqx/+zOwPxbjlneDEP6QyEfduxOzvLWM6TV8spNbI9z+X+dkRMovl5zgZrY9PzsM/cBcg3GS3rMUVrCHuJWNxcsX6oihKg4Dso8LZrvQXpmG4Ucgq4vbF+pzRI2frzuwW4SoddiKfz2cGrihkso0+nnuWe1a7NzjJzVR1oq6yA5GV4WWFIJT56OJ8Ta4y4dAKbgIhg7YFHfahfvc62B5BElxa9TtBIkud1sLDN2l6VEhso2sFpywQxbNXfLTV7GA4NIGAUPLf4qzBNE1kNkjaX6sdfY6MvzCyfWmui+KgZxRSZeUJ2bboP/0l0vuuDzLUlUUeqom8aGJfuQbXnGhld1vzqtvmc2DSLIEJ1v8V6c="
+notifications:
+  email: false
+git:
+  quiet: true
+  depth: false
+jdk: openjdk11
+node_js: lts/*
+python: 3.7
+services:
+  - docker
+addons:
+  apt:
+    update: true
+    packages:
+      - python3-pip
+install: true
+before_install:
+  - |
+    if [ ! -f ${HOME}/.local/daggerok/bash-functions/master/main.bash ] ; then
+      mkdir -p ${HOME}/.local/daggerok/bash-functions/master ;
+      curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash > ${HOME}/.local/daggerok/bash-functions/master/main.bash ;
+    fi
+    source ${HOME}/.local/daggerok/bash-functions/master/main.bash ;
+  - stop_any 80 5432 8080 8001 8002 8003 8004
+  #
+  - export PATH=$HOME/.local/bin:$PATH
+  - pip3 install --user --upgrade pip setuptools
+  - pip install --user --upgrade docker-compose httpie
+jobs:
+  include:
+    - stage: test
+      name: test
+      before_script:
+        - ./mvnw
+        - bash frontend/target/*.jar &
+        - bash greeting-service/target/*.jar &
+        - bash hello-variants-service/target/*.jar &
+        - wait_for 8001 8002 8003 8004
+      script:
+        - http :8001/actuator/info
+        - http :8001/info
+        - http :8001/find-all-hello
+        #
+        - http :8003/actuator/info
+        - http :8003/info
+        - http :8003/find-all-greetings
+        - http :8003/find-all-greetings/max
+        #
+        - http :8004/actuator/info
+        - http :8004/info
+        - http :8004/find-all-hello
+        - http :8004/find-all-greetings
+        - http :8004/find-all-greetings/maksimko
+      after_script:
+        - for n in 1 3 4 ; do http post :800$n/actuator/shutdown ; done
+cache:
+  pip: true
+  packages: true
+  directories:
+    - ~/.m2
+    - ~/.docker
+    - ~/.local

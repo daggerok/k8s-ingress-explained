@@ -1,0 +1,65 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection) or
+# paste cURL into the file and request will be converted to HTTP Request format.
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+
+
+### hello actuator info
+GET http://127.0.0.1:8001/actuator/info
+Accept: application/json
+
+### hello api info (fallback)
+GET http://127.0.0.1:8001/info
+Accept: application/json
+
+### hello api find-all
+GET http://127.0.0.1:8001/find-all-hello
+Accept: application/json
+
+
+
+### greeting actuator info
+GET http://127.0.0.1:8003/actuator/info
+Accept: application/json
+
+### greeting api info (fallback)
+GET http://127.0.0.1:8003/info
+Accept: application/json
+
+### greeting api find-all Buddy
+GET http://127.0.0.1:8003/find-all-greetings
+Accept: application/json
+
+### greeting api find-all named
+GET http://127.0.0.1:8003/find-all-greetings/max
+Accept: application/json
+
+
+
+### greeting actuator info
+GET http://127.0.0.1:8004/actuator/info
+Accept: application/json
+
+### greeting api info (fallback)
+GET http://127.0.0.1:8004/info
+Accept: application/json
+
+### frontend api -> hello rsocket api
+GET http://127.0.0.1:8004/find-all-hello
+Accept: application/json
+
+### frontend api -> greeting rest api
+GET http://127.0.0.1:8004/find-all-greetings
+Accept: application/json
+
+### frontend api -> greeting rest api named
+GET http://127.0.0.1:8004/find-all-greetings/maksimko
+Accept: application/json
+
+
+
+###

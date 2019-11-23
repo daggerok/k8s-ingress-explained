@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.example.k8snginxingressexample</groupId>
+        <artifactId>k8s-nginx-ingress-example</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <packaging>pom</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <name>${project.artifactId}</name>
+    <groupId>com.example.k8snginxingressexample.shared</groupId>
+    <artifactId>shared</artifactId>
+
+    <modules>
+        <module>info</module>
+        <module>hello-props</module>
+        <module>greeting-props</module>
+    </modules>
+
+</project>
