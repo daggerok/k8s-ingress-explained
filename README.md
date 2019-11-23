@@ -32,6 +32,15 @@ http :8004/api/greeting/find-all-greetings/max
 http post :8004/actuator/shutdown
 ```
 
+## release
+
+```bash
+./mvnw release:clean release:prepare release:perform \
+    -DgenerateBackupPoms=false \
+    --batch-mode
+# ./mvnw release:rollback
+```
+
 ## resources
 
 * [R2DBC H2](https://github.com/spring-projects-experimental/spring-boot-r2dbc#h2-embedded)

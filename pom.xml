@@ -53,6 +53,7 @@
         <Semantic-UI.version>2.4.1</Semantic-UI.version>
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
         <spring-data-r2dbc.version>0.1.0.M2</spring-data-r2dbc.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -199,6 +200,20 @@
                     </executions>
                     <configuration>
                         <executable>true</executable>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release-plugin.version}</version>
+                    <configuration>
+                        <arguments>-DskipTests</arguments>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <generateReleasePoms>false</generateReleasePoms>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
+                        <preparationGoals>clean</preparationGoals>
+                        <completionGoals>clean</completionGoals>
                     </configuration>
                 </plugin>
             </plugins>
