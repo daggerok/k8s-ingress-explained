@@ -12,6 +12,7 @@
 
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
+    <name>${project.artifactId}</name>
     <artifactId>hello-props</artifactId>
 
 </project>
