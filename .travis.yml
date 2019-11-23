@@ -33,7 +33,7 @@ before_install:
 jobs:
   include:
     - stage: test
-      name: test
+      name: local
       before_script:
         - ./mvnw
         - bash frontend/target/*.jar &
