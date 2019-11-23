@@ -26,14 +26,14 @@
         <developerConnection>scm:git:git@github.com:daggerok/k8s-nginx-ingress-example.git</developerConnection>
         <connection>scm:git:https://github.com/daggerok/k8s-nginx-ingress-example.git</connection>
         <url>https://github.com/daggerok/k8s-nginx-ingress-example</url>
-        <tag>0.0.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <modelVersion>4.0.0</modelVersion>
     <name>${project.artifactId}</name>
     <groupId>com.example.k8snginxingressexample</groupId>
     <artifactId>k8s-nginx-ingress-example</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
