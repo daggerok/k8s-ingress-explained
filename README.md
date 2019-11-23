@@ -41,11 +41,12 @@ http post :8004/actuator/shutdown
 
 ## resources
 
+* [Using skaffold](https://github.com/daggerok/boot-skaffold)
+* [Using maven-release-plugin](https://github.com/daggerok/es-cqrs)
 * [R2DBC H2](https://github.com/spring-projects-experimental/spring-boot-r2dbc#h2-embedded)
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/maven-plugin/)
-* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/reference/htmlsingle/#configuration-metadata-annotation-processor)
-* [Spring Data R2DBC [Experimental]](https://docs.spring.io/spring-data/r2dbc/docs/1.0.x/reference/html/#reference)
 * [R2DBC example](https://github.com/spring-projects-experimental/spring-boot-r2dbc/tree/master/spring-boot-example-h2)
 * [R2DBC Homepage](https://r2dbc.io)
-
+* [Spring Data R2DBC [Experimental]](https://docs.spring.io/spring-data/r2dbc/docs/1.0.x/reference/html/#reference)
+* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/reference/htmlsingle/#configuration-metadata-annotation-processor)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.2.1.RELEASE/maven-plugin/)
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
