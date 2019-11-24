@@ -33,7 +33,7 @@ before_install:
 jobs:
   include:
     - stage: test
-      name: dkanejs
+      name: jib + dkanejs
       before_script:
         - ./mvnw clean package jib:dockerBuild
         - ./mvnw -f docker-compose -Pup
@@ -57,7 +57,7 @@ jobs:
       after_script:
         - ./mvnw -f docker-compose -Pdown
     - stage: test
-      name: jib
+      name: jib + fabric8
       before_script:
         - ./mvnw clean package jib:dockerBuild
         - ./mvnw -f docker-compose -Pstart
