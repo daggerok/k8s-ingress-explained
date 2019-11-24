@@ -62,11 +62,11 @@ jobs:
         - http :/actuator/health
         - http :/find-all-greetings
         #
-        - kubectl delete -f k8s/
-        - k3d stop --name=k3s
-        - docker rm -f -v `docker ps -a -q`
-        - cat ~/.config/k3d/k3s/kubeconfig.yaml
-        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml
+        - kubectl delete -f k8s/                    || echo 'oops, kubectl failed.'
+        - k3d stop --name=k3s                       || echo 'oops, k3d failed.'
+        - docker rm -f -v `docker ps -a -q`         || echo 'oops, docker failed.'
+        - cat ~/.config/k3d/k3s/kubeconfig.yaml     || echo 'oops, cat failed.'
+        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml  || echo 'oops, rm failed.'
     - stage: test
       name: jib + k8s, k3s, k3d...
       script:
@@ -91,15 +91,15 @@ jobs:
         #- skaffold dev &
         #
         - kubectl apply -f k8s/hello-variants-service.yaml -f k8s/greeting-service.yaml -f k8s/frontend.yaml
-        - sleep 4m
+        - sleep 3m
         - http :30004/actuator/health
         - http :30004/find-all-greetings
         #
-        - kubectl delete -f k8s/
-        - k3d stop --name=k3s
-        - docker rm -f -v `docker ps -a -q`
-        - cat ~/.config/k3d/k3s/kubeconfig.yaml
-        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml
+        - kubectl delete -f k8s/                    || echo 'oops, kubectl failed...'
+        - k3d stop --name=k3s                       || echo 'oops, k3d failed...'
+        - docker rm -f -v `docker ps -a -q`         || echo 'oops, docker failed...'
+        - cat ~/.config/k3d/k3s/kubeconfig.yaml     || echo 'oops, cat failed...'
+        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml  || echo 'oops, rm failed...'
     - stage: test
       name: jib + dkanejs
       before_script:
