@@ -35,6 +35,39 @@ before_install:
 jobs:
   include:
     - stage: test
+      name: ingress
+      script:
+        - cd $TRAVIS_BUILD_DIR
+        #- wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+        - curl -s https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+        - k3d create --name k3s --api-port 6551 --publish 80:80 --workers 3
+        - sleep 30s
+        - export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
+        #
+        - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+        - chmod +x ./kubectl
+        - mv ./kubectl ~/.local/bin/
+        - kubectl cluster-info
+        - kubectl get pods --all-namespaces -o wide --watch &
+        #
+        - echo 'https://kubernetes.github.io/ingress-nginx/deploy/#prerequisite-generic-deployment-command'
+        - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+        - echo 'https://kubernetes.github.io/ingress-nginx/deploy/#bare-metal'
+        - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
+        - sleep 2m
+        #
+        - kubectl apply -f k8s/
+        - sleep 2m
+        - kubectl get all -o wide
+        - http :/actuator/health
+        - http :/find-all-greetings
+        #
+        - kubectl delete -f k8s/
+        - k3d stop --name=k3s
+        - docker rm -f -v `docker ps -a -q`
+        - cat ~/.config/k3d/k3s/kubeconfig.yaml
+        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml
+    - stage: test
       name: jib + k8s, k3s, k3d...
       script:
         - cd $TRAVIS_BUILD_DIR
@@ -58,7 +91,7 @@ jobs:
         #- skaffold dev &
         #
         - kubectl get pods -o wide -w &
-        - kubectl apply -f k8s/
+        - kubectl apply -f k8s/hello-variants-service.yaml -f k8s/greeting-service.yaml -f k8s/frontend.yaml
         - sleep 2m
         - kubectl get all -o wide
         - http :30004/actuator/health

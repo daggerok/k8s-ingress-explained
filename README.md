@@ -296,6 +296,11 @@ Check [.travis.yml](.travis.yml) for details
 
 ## resources
 
+* [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+* [nginx-ingress: common](https://kubernetes.github.io/ingress-nginx/deploy/#prerequisite-generic-deployment-command)
+* [nginx-ingress: docker for mac / windows](https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac)
+* [nginx-ingress: bare-metal](https://kubernetes.github.io/ingress-nginx/deploy/#bare-metal)
+* [k8s ingress controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 * [k8s ingress minikube](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/)
 * [Quarkus skaffold](https://medium.com/@dav.poletti/quarkus-development-mode-with-kubernetes-and-skaffold-ea17621e168)
 * [multi skaffold](https://github.com/GoogleContainerTools/skaffold/blob/master/examples/jib-multimodule/skaffold.yaml)
