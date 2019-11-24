@@ -245,6 +245,15 @@ http :8004/find-all-greetings
 # ./mvnw release:rollback
 ```
 
+## features
+
+* [fabric8 docker-compose wait]()
+* [docker-compose with fabric8 docker-maven-plugin]()
+* [jib thin jar]()
+* [jib fat jar]()
+* [spring.factories auto-configurations]()
+* [spring-boot maven multi-module project]()
+
 ## resources
 
 * [fabric8 docker-compose wait](https://github.com/fabric8io/docker-maven-plugin/issues/1118)
