@@ -235,7 +235,8 @@ http :8004/find-all-greetings
 
 ## resources
 
-* [Shell in jib]( https://github.com/GoogleContainerTools/jib/blob/master/docs/faq.md#where-is-bash)
+* [fabric8 docker-compose wait](https://github.com/fabric8io/docker-maven-plugin/issues/1118)
+* [Shell in jib](https://github.com/GoogleContainerTools/jib/blob/master/docs/faq.md#where-is-bash)
 * [Using jib](https://github.com/GoogleContainerTools/jib/blob/master/docs/faq.md#what-would-a-dockerfile-for-a-jib-built-image-look-like)
 * [Using skaffold](https://github.com/daggerok/boot-skaffold)
 * [Using maven-release-plugin](https://github.com/daggerok/es-cqrs)
