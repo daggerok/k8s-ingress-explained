@@ -1,7 +1,16 @@
 # k8s nginx-ingress [![Build Status](https://travis-ci.org/daggerok/k8s-nginx-ingress-example.svg?branch=master)](https://travis-ci.org/daggerok/k8s-nginx-ingress-example)
 Reverse-proxy by nginx-ingress for spring-boot services in k8s with skaffold
 
-IN PROGRESS
+Status: IN PROGRESS
+
+## features
+
+* [fabric8 docker-compose wait]()
+* [docker-compose with fabric8 docker-maven-plugin]()
+* [jib thin jar]()
+* [jib fat jar]()
+* [spring.factories auto-configurations]()
+* [spring-boot maven multi-module project]()
 
 ## table of content
 1. [version: 0.0.1](#local)
@@ -244,15 +253,6 @@ http :8004/find-all-greetings
 ./mvnw release:clean release:prepare release:perform --batch-mode
 # ./mvnw release:rollback
 ```
-
-## features
-
-* [fabric8 docker-compose wait]()
-* [docker-compose with fabric8 docker-maven-plugin]()
-* [jib thin jar]()
-* [jib fat jar]()
-* [spring.factories auto-configurations]()
-* [spring-boot maven multi-module project]()
 
 ## resources
 
