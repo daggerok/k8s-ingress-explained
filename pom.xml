@@ -168,7 +168,7 @@
         <profile>
             <id>dev</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <dependencies>
                 <dependency>
@@ -212,10 +212,10 @@
                     <configuration>
                         <skip>true</skip>
                         <from>
-                            <!--<image>gcr.io/distroless/java:debug</image>-->
-                            <!--<image>gcr.io/distroless/java:8</image>-->
-                            <!--<image>gcr.io/distroless/java:11</image>-->
-                            <image>gcr.io/distroless/java:11-debug</image>
+                            <!--<image>gcr.io/distroless/java:debug</image>
+                            <image>gcr.io/distroless/java:8</image>
+                            <image>gcr.io/distroless/java:11-debug</image>-->
+                            <image>gcr.io/distroless/java:11</image>
                         </from>
                         <allowInsecureRegistries>true</allowInsecureRegistries>
                         <container>
@@ -237,7 +237,7 @@
                             <entrypoint>
                                 <shell>bash</shell>
                                 <option>-c</option>
-                                <arg>java -cp /tmp/classpath:/tmp/*.jar</arg>
+                                <arg>java -jar /tmp/classpath/*.jar</arg>
                             </entrypoint>
                             <args>
                                 <arg>/bin/bash</arg>
