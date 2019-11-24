@@ -38,7 +38,7 @@ jobs:
         - ./mvnw clean package jib:dockerBuild
         - ./mvnw -f docker-compose -Pup
         - wait_for 8001 8002 8003 8004
-        - sleep 15s
+        - sleep 30s
       script:
         - http :8001/actuator/info
         - http :8001/info
