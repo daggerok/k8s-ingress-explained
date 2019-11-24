@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.example.k8snginxingressexample</groupId>
         <artifactId>k8s-nginx-ingress-example</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.3</version>
     </parent>
 
     <packaging>pom</packaging>
