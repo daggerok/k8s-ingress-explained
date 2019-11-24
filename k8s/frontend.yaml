@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: daggerok/k8s-nginx-ingress-example-frontend
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8004
+              protocol: TCP
+              name: "webflux"
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              port: 8004
+              path: /actuator/health
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              port: 8004
+              path: /actuator/health
+          env:
+            - name: HELLO_HOST
+              value: "hello-variants-service"
+            - name: HELLO_PORT
+              value: "8002"
+            - name: GREETING_HOST
+              value: "greeting-service"
+            - name: GREETING_PORT
+              value: "8003"
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 8004
+      protocol: TCP
+      name: "webflux"
+      targetPort: 8004
+      nodePort: 30004
+  type: NodePort
+---

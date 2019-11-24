@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting-service
+  labels:
+    app: greeting-service
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: greeting-service
+      labels:
+        app: greeting-service
+    spec:
+      containers:
+        - name: greeting-service
+          image: daggerok/k8s-nginx-ingress-example-greeting-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8003
+              protocol: TCP
+              name: "webflux"
+          readinessProbe:
+            httpGet:
+              port: 8003
+              path: /actuator/health
+          livenessProbe:
+            httpGet:
+              port: 8003
+              path: /actuator/health
+          env:
+            - name: HELLO_HOST
+              value: "hello-variants-service.default.svc.cluster.local"
+            - name: HELLO_PORT
+              value: "8002"
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: greeting-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greeting-service
+spec:
+  selector:
+    app: greeting-service
+  sessionAffinity: None
+  ports:
+    - port: 8003
+      protocol: TCP
+      name: "webflux"
+      targetPort: 8003
+      nodePort: 30003
+  type: NodePort
+---

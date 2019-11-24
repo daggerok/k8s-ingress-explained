@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-variants-service
+  labels:
+    app: hello-variants-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: hello-variants-service
+      labels:
+        app: hello-variants-service
+    spec:
+      containers:
+        - name: hello-variants-service
+          image: daggerok/k8s-nginx-ingress-example-hello-variants-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8001
+              protocol: TCP
+              name: "webflux"
+            - containerPort: 8002
+              protocol: TCP
+              name: "r-socket"
+          readinessProbe:
+            httpGet:
+              port: 8001
+              path: /actuator/health
+          livenessProbe:
+            httpGet:
+              port: 8001
+              path: /actuator/health
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: hello-variants-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-variants-service
+spec:
+  selector:
+    app: hello-variants-service
+  sessionAffinity: None
+  ports:
+    - port: 8001
+      protocol: TCP
+      name: "webflux"
+      targetPort: 8001
+      nodePort: 30001
+    - port: 8002
+      protocol: TCP
+      name: "r-socket"
+      targetPort: 8002
+      nodePort: 30002
+  #type: LoadBalancer
+  #type: ClusterIP
+  type: NodePort
+---
