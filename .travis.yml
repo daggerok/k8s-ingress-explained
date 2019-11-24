@@ -33,6 +33,52 @@ before_install:
 jobs:
   include:
     - stage: test
+      name: dkanejs
+      before_script:
+        - ./mvnw clean package jib:dockerBuild
+        - ./mvnw -f docker-compose -Pup
+        - wait_for 8001 8002 8003 8004
+        - sleep 15s
+      script:
+        - http :8001/actuator/info
+        - http :8001/info
+        - http :8001/find-all-hello
+        #
+        - http :8003/actuator/info
+        - http :8003/info
+        - http :8003/find-all-greetings
+        - http :8003/find-all-greetings/max
+        #
+        - http :8004/actuator/info
+        - http :8004/info
+        - http :8004/find-all-hello
+        - http :8004/find-all-greetings
+        - http :8004/find-all-greetings/maksimko
+      after_script:
+        - ./mvnw -f docker-compose -Pdown
+    - stage: test
+      name: jib
+      before_script:
+        - ./mvnw clean package jib:dockerBuild
+        - ./mvnw -f docker-compose -Pstart
+      script:
+        - http :8001/actuator/info
+        - http :8001/info
+        - http :8001/find-all-hello
+        #
+        - http :8003/actuator/info
+        - http :8003/info
+        - http :8003/find-all-greetings
+        - http :8003/find-all-greetings/max
+        #
+        - http :8004/actuator/info
+        - http :8004/info
+        - http :8004/find-all-hello
+        - http :8004/find-all-greetings
+        - http :8004/find-all-greetings/maksimko
+      after_script:
+        - ./mvnw -f docker-compose -Pstop
+    - stage: test
       name: local
       before_script:
         - ./mvnw

@@ -50,8 +50,11 @@
         <r2dbc.version>0.8.0.RC2</r2dbc.version>
         <Semantic-UI.version>2.4.1</Semantic-UI.version>
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
+        <jib-maven-plugin.version>1.7.0</jib-maven-plugin.version>
         <spring-data-r2dbc.version>0.1.0.M2</spring-data-r2dbc.version>
+        <docker-maven-plugin.version>0.31.0</docker-maven-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <docker-compose-maven-plugin.version>2.5.1</docker-compose-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -179,7 +182,7 @@
     </profiles>
 
     <build>
-        <defaultGoal>clean package</defaultGoal>
+        <defaultGoal>package jib:dockerBuild</defaultGoal>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -189,15 +192,69 @@
                     <executions>
                         <execution>
                             <id>build-info</id>
+                            <phase>process-resources</phase>
                             <goals><goal>build-info</goal></goals>
                         </execution>
                         <execution>
                             <id>repackage</id>
+                            <phase>package</phase>
                             <goals><goal>repackage</goal></goals>
                         </execution>
                     </executions>
                     <configuration>
                         <executable>true</executable>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${jib-maven-plugin.version}</version>
+                    <configuration>
+                        <skip>true</skip>
+                        <from>
+                            <!--<image>gcr.io/distroless/java:debug</image>-->
+                            <!--<image>gcr.io/distroless/java:8</image>-->
+                            <!--<image>gcr.io/distroless/java:11</image>-->
+                            <image>gcr.io/distroless/java:11-debug</image>
+                        </from>
+                        <allowInsecureRegistries>true</allowInsecureRegistries>
+                        <container>
+                            <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                        </container>
+                        <to>
+                            <image>daggerok/${project.parent.artifactId}-${project.artifactId}</image>
+                            <tags>
+                                <tag>${project.version}</tag>
+                                <tag>latest</tag>
+                            </tags>
+                        </to>
+                        <!--
+                        <skip>true</skip>
+                        <allowInsecureRegistries>true</allowInsecureRegistries>
+                        <container>
+                            <appRoot>/tmp</appRoot>
+                            <useCurrentTimestamp>true</useCurrentTimestamp>
+                            <entrypoint>
+                                <shell>bash</shell>
+                                <option>-c</option>
+                                <arg>java -cp /tmp/classpath:/tmp/*.jar</arg>
+                            </entrypoint>
+                            <args>
+                                <arg>/bin/bash</arg>
+                            </args>
+                        </container>
+                        <containerizingMode>packaged</containerizingMode>
+                        <from>
+                            <image>openjdk:11.0.5-jre-stretch</image>
+                        </from>
+                        <to>
+                            <image>daggerok/${project.parent.artifactId}-${project.artifactId}</image>
+                            <tags>
+                                <tag>${project.version}</tag>
+                                <tag>latest</tag>
+                            </tags>
+                        </to>
+                        -->
                     </configuration>
                 </plugin>
                 <plugin>
@@ -228,10 +285,11 @@
     </repositories>
 
     <modules>
+        <module>shared</module>
+        <module>docker-compose</module>
         <module>hello-variants-service</module>
         <module>greeting-service</module>
         <module>frontend</module>
-        <module>shared</module>
     </modules>
 
 </project>

@@ -1,0 +1,45 @@
+version: "2.1"
+networks:
+  k8s-nginx-ingress-example:
+    driver: bridge
+services:
+  frontend:
+    image: "daggerok/k8s-nginx-ingress-example-frontend:latest"
+    ports: ["8004:8004"]
+    environment:
+      GREETING_HOST: "greeting-service"
+      HELLO_HOST: "hello-variants-service"
+    ulimits:
+      memlock:
+        hard: 2048
+        soft: 1024
+    networks: [k8s-nginx-ingress-example]
+    depends_on:
+      - greeting-service
+      - hello-variants-service
+  greeting-service:
+    image: "daggerok/k8s-nginx-ingress-example-greeting-service:latest"
+    ports: ["8003:8003"]
+    environment:
+      HELLO_HOST: "hello-variants-service"
+    ulimits:
+      memlock:
+        hard: 2048
+        soft: 1024
+    networks:
+      k8s-nginx-ingress-example:
+        aliases: ["greeting-service"]
+    depends_on: [hello-variants-service]
+  hello-variants-service:
+    image: "daggerok/k8s-nginx-ingress-example-hello-variants-service:latest"
+    ports:
+      - "8001:8001"
+      - "8002:8002"
+    ulimits:
+      memlock:
+        hard: 2048
+        soft: 1024
+    networks:
+      k8s-nginx-ingress-example:
+        aliases:
+          - hello-variants-service
