@@ -81,7 +81,7 @@ jobs:
         - chmod +x ./kubectl
         - mv ./kubectl ~/.local/bin/
         - kubectl cluster-info
-        - kubectl get pods --all-namespaces
+        - kubectl get pods --all-namespaces -o wide --watch &
         #
         #- curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
         #- chmod +x skaffold
@@ -90,10 +90,8 @@ jobs:
         #- skaffold --images daggerok/boot-skaffold
         #- skaffold dev &
         #
-        - kubectl get pods -o wide -w &
         - kubectl apply -f k8s/hello-variants-service.yaml -f k8s/greeting-service.yaml -f k8s/frontend.yaml
-        - sleep 2m
-        - kubectl get all -o wide
+        - sleep 2.5m
         - http :30004/actuator/health
         - http :30004/find-all-greetings
         #
