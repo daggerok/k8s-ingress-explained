@@ -54,10 +54,10 @@ jobs:
         - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
         - echo 'https://kubernetes.github.io/ingress-nginx/deploy/#bare-metal'
         - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
-        - sleep 2m
+        - sleep 120s
         #
         - kubectl apply -f k8s/
-        - sleep 2m
+        - sleep 120s
         - kubectl get all -o wide
         - http :/actuator/health
         - http :/find-all-greetings
