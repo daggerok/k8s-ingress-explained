@@ -1,24 +1,30 @@
 # k8s nginx-ingress [![Build Status](https://travis-ci.org/daggerok/k8s-nginx-ingress-example.svg?branch=master)](https://travis-ci.org/daggerok/k8s-nginx-ingress-example)
-Reverse-proxy by nginx-ingress for spring-boot services in k8s
+Reverse-proxy by nginx-ingress for spring-boot services in k8s with skaffold
 
 IN PROGRESS
 
 ## table of content
-1. [local workflow](#local)
-   * [hello](#local-hello-variants-service)
-   * [greeting](#local-greeting-service)
-   * [frontend](#local-frontend)
-1. [gib-maven-plugin](#gib)
-   * [fat jar configuration](#fat-jar-configuration)
-   * [thin jar configuration](#thin-jar-configuration)
-   * [debug jib images](#debug-jib)
-1. [fabric8 docker-maven-plugin](#fabric8)
-   * [configuration](#fabric8-configuration)
-   * [build, run and test](#run-with-fabric8)
-1. [dkanejs docker-compose-maven-plugin](#dkanejs-docker-compose-maven-plugin)
-   * [configuration](#dkanejs-configuration)
-   * [build, run and test](#run-using-dkanejs-docker-compose-maven-plugin)
-1. [maven-release-plugin](#release)
+1. [version: 0.0.1](#local)
+   * [local workflow](#local)
+     * [hello](#local-hello-variants-service)
+     * [greeting](#local-greeting-service)
+     * [frontend](#local-frontend)
+   * [maven-release-plugin](#release)
+1. [version: 0.0.2](#gib)
+   * [gib-maven-plugin](#gib)
+     * [fat jar configuration](#fat-jar-configuration)
+     * [thin jar configuration](#thin-jar-configuration)
+     * [debug jib images](#debug-jib)
+   * [fabric8 docker-maven-plugin](#fabric8)
+     * [configuration](#fabric8-configuration)
+     * [build, run and test](#run-with-fabric8)
+   * [dkanejs docker-compose-maven-plugin](#dkanejs-docker-compose-maven-plugin)
+     * [configuration](#dkanejs-configuration)
+     * [build, run and test](#run-using-dkanejs-docker-compose-maven-plugin)
+1. [version: 0.0.3](#k8s--skaffold)
+   * [kubernetes skaffold workflow](#k8s--skaffold)
+     * [k8s resources](#k8s)
+     * [skaffold](#skaffold)
 1. [resources](#resources)
 
 ## local
@@ -225,6 +231,12 @@ http :8004/find-all-hello
 http :8004/find-all-greetings
 ./mvnw -f docker-compose -Pdown
 ```
+
+## k8s + skaffold
+
+### k8s
+
+### skaffold
 
 ## release
 
