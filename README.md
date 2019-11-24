@@ -157,11 +157,22 @@ docker run -it \
         <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
         <images>
             <image>
-                <alias>${project.parent.artifactId}</alias>
-                <!-- The <run> part is taken from compose -->
+                <alias>frontend</alias>
                 <external>
                     <type>compose</type>
+                    <basedir>src/main/docker</basedir>
+                    <composeFile>docker-compose.yml</composeFile>
                 </external>
+                <run>
+                    <wait>
+                        <http>
+                            <url>http://127.0.0.1:8004/find-all-greetings/ready</url>
+                            <method>GET</method>
+                            <status>200</status>
+                        </http>
+                        <time>100000</time>
+                    </wait>
+                </run>
             </image>
         </images>
     </configuration>
@@ -198,7 +209,7 @@ http :8004/find-all-greetings
         <removeImages>true</removeImages>
         <removeOrphans>true</removeOrphans>
         <removeVolumes>true</removeVolumes>
-        <composeFile>${project.basedir}/src/main/docker/docker-compose.yml</composeFile>
+        <composeFile>${project.basedir}/src/main/docker/docker-compose.yaml</composeFile>
     </configuration>
 </plugin>
 ```
