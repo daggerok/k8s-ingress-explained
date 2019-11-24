@@ -296,6 +296,8 @@ Check [.travis.yml](.travis.yml) for details
 
 ## resources
 
+* [k8s ingress minikube](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/)
+* [Quarkus skaffold](https://medium.com/@dav.poletti/quarkus-development-mode-with-kubernetes-and-skaffold-ea17621e168)
 * [multi skaffold](https://github.com/GoogleContainerTools/skaffold/blob/master/examples/jib-multimodule/skaffold.yaml)
 * [spring-boot k8s](https://dzone.com/articles/developing-a-spring-boot-application-for-kubernete-4)
 * [spring k8s](https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin)
