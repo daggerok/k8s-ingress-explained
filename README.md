@@ -285,6 +285,8 @@ k3d stop --name=k3s
 rm -rf ~/.config/k3d/k3s/kubeconfig.yaml
 ```
 
+Check [.travis.yml](.travis.yml) for details
+
 ## release
 
 ```bash

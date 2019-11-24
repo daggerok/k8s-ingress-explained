@@ -40,7 +40,7 @@ jobs:
         - cd $TRAVIS_BUILD_DIR
         #- wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
         - curl -s https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
-        - k3d create --name k3s --api-port 6551 --publish 80:80 --workers 2
+        - k3d create --name k3s --api-port 6551 --publish 30004:30004 --workers 2
         - sleep 30s
         - export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
         #
