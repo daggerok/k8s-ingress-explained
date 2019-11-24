@@ -1,4 +1,4 @@
-# k8s nginx-ingress
+# k8s nginx-ingress [![Build Status](https://travis-ci.org/daggerok/k8s-nginx-ingress-example.svg?branch=master)](https://travis-ci.org/daggerok/k8s-nginx-ingress-example)
 Reverse-proxy by nginx-ingress for spring-boot services in k8s
 
 IN PROGRESS
