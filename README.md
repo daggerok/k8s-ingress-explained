@@ -25,7 +25,7 @@ Reverse-proxy by nginx-ingress for spring-boot services in k8s with skaffold
      * [skaffold](#skaffold)
 1. [resources](#resources)
 
-Status: [![Build Status](https://travis-ci.org/daggerok/k8s-nginx-ingress-example.svg?branch=master)](https://travis-ci.org/daggerok/k8s-nginx-ingress-example) IN PROGRESS
+Status: IN PROGRESS
 
 ## features
 
