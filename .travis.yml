@@ -12,6 +12,8 @@ node_js: lts/*
 python: 3.7
 services:
   - docker
+os: linux
+arch: amd64
 addons:
   apt:
     update: true
@@ -32,6 +34,41 @@ before_install:
   - pip install --user --upgrade docker-compose httpie
 jobs:
   include:
+    - stage: test
+      name: jib + k8s, k3s, k3d...
+      script:
+        - cd $TRAVIS_BUILD_DIR
+        #- wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+        - curl -s https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+        - k3d create --name k3s --api-port 6551 --publish 80:80 --workers 2
+        - sleep 30s
+        - export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
+        #
+        - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+        - chmod +x ./kubectl
+        - mv ./kubectl ~/.local/bin/
+        - kubectl cluster-info
+        - kubectl get pods --all-namespaces
+        #
+        #- curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+        #- chmod +x skaffold
+        #- mv skaffold ~/.local/bin/
+        #- ./mvnw clean compile jib:dockerBuild
+        #- skaffold --images daggerok/boot-skaffold
+        #- skaffold dev &
+        #
+        - kubectl get pods -o wide -w &
+        - kubectl apply -f k8s/
+        - sleep 2m
+        - kubectl get all -o wide
+        - http :30004/actuator/health
+        - http :30004/find-all-greetings
+        #
+        - kubectl delete -f k8s/
+        - k3d stop --name=k3s
+        - docker rm -f -v `docker ps -a -q`
+        - cat ~/.config/k3d/k3s/kubeconfig.yaml
+        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml
     - stage: test
       name: jib + dkanejs
       before_script:

@@ -280,7 +280,8 @@ export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
 #kubectl cluster-info
 skaffold dev
 http :30004/find-all-greetings
-docker rm -f -v `docker ps -aq`
+k3d stop --name=k3s
+#docker rm -f -v `docker ps -aq`
 rm -rf ~/.config/k3d/k3s/kubeconfig.yaml
 ```
 
