@@ -57,7 +57,7 @@ jobs:
         - sleep 120s
         #
         - kubectl apply -f k8s/
-        - sleep 120s
+        - sleep 180s
         - kubectl get all -o wide
         - http :/actuator/health
         - http :/find-all-greetings
@@ -91,7 +91,7 @@ jobs:
         #- skaffold dev &
         #
         - kubectl apply -f k8s/hello-variants-service.yaml -f k8s/greeting-service.yaml -f k8s/frontend.yaml
-        - sleep 3m
+        - sleep 180s
         - http :30004/actuator/health
         - http :30004/find-all-greetings
         #
