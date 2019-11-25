@@ -17,6 +17,7 @@
         <module>info</module>
         <module>hello-props</module>
         <module>greeting-props</module>
+        <module>global-web-filter</module>
     </modules>
 
 </project>

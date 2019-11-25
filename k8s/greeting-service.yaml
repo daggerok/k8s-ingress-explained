@@ -23,10 +23,12 @@ spec:
               name: "webflux"
           readinessProbe:
             httpGet:
+              scheme: HTTP
               port: 8003
               path: /actuator/health
           livenessProbe:
             httpGet:
+              scheme: HTTP
               port: 8003
               path: /actuator/health
           env:

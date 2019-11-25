@@ -1,0 +1,33 @@
+---
+## Trafeik PathPrefixStrip works only in k8s distribution based on k3d (k3s):
+#
+# k3d create --name k3s --api-port 6551 --publish 80:80 --workers 1 ; sleep 5s ; export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')" ; kubectl get pods --all-namespaces -o wide -w &
+# kubectl apply -f k8s/ ; kubectl apply -f k8s/ingress/ingress-trafeik-path-prefix-strip.yaml
+# ...
+# kubectl delete -f k8s/ ; kubectl delete -f k8s/ingress/ ; k3d stop --name=k3s -a ; docker rm -f -v `docker ps -a -q` ; rm -rf ~/.config/k3d/k3s
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: k8s-trafeik-path-prefix-strip-ingress
+  annotations:
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  backend:
+    serviceName: frontend
+    servicePort: 8004
+    #servicePort: "webflux"
+  rules:
+    - http:
+        paths:
+          - path: /hello
+            backend:
+              serviceName: hello-variants-service
+              servicePort: 8001
+              #servicePort: "webflux"
+          - path: /greeting
+            backend:
+              serviceName: greeting-service
+              servicePort: 8003
+              #servicePort: "webflux"
+---

@@ -1,0 +1,17 @@
+---
+## Single service ingress or so called default backend works for both: k3s and Docker for Mac:
+#
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml ; kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml ; kubectl get pods --all-namespaces --watch & ; kubectl apply -f k8s/
+# ...
+# kubectl delete -f k8s/ ; docker rm -f -v `docker ps -a -q`
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: k8s-nginx-ingress-example-default-backend-or-single-service-ingress
+spec:
+  backend:
+    serviceName: frontend
+    #servicePort: "webflux"
+    servicePort: 8004
+---

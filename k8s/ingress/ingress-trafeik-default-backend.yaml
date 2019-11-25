@@ -1,0 +1,18 @@
+---
+## Trafeik default backend works k8s distributions based on k3d (k3s) and Docker for Mac / Windows with no problems!
+#
+# k3d create --name k3s --api-port 6551 --publish 80:80 --workers 1 ; sleep 5s ; export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')" ; kubectl get pods --all-namespaces -o wide -w &
+# kubectl apply -f k8s/ ; kubectl apply -f k8s/ingress/ingress-trafeik-path-prefix-strip.yaml
+# ...
+# kubectl delete -f k8s/ ; kubectl delete -f k8s/ingress/ ; k3d stop --name=k3s -a ; docker rm -f -v `docker ps -a -q` ; rm -rf ~/.config/k3d/k3s
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: k8s-trafeik-default-backend-or-single-service-ingress
+spec:
+  backend:
+    serviceName: frontend
+    servicePort: "webflux"
+    #servicePort: 8004
+---
