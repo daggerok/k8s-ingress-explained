@@ -1,6 +1,18 @@
 # k8s ingress explained [![Build Status](https://travis-ci.org/daggerok/k8s-ingress-explained.svg?branch=master)](https://travis-ci.org/daggerok/k8s-ingress-explained)
 Expose kubernetes services with nginx / traefik ingress for spring-boot services in k8s with skaffold
 
+```
+                 +---------------------------------------------+
+                 |                        +-------+            |
+                 |      K8S               | hello |<---+       |
+ \O_      +---------+                     +-------+    |       |
+  |  <--> | Ingress | <---+                            |       |
+ / \      +---------+     |    +----------+      +----------+  |
+                 |        +--> | frontend | ---> | greeting |  |
+                 |             +----------+      +----------+  |
+                 +---------------------------------------------+
+```
+
 ## table of content
 1. [version: 0.0.1]()
    * [local workflow](#local)
