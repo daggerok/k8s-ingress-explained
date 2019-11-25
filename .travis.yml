@@ -1,7 +1,6 @@
 env:
   global:
     - TERM=dumb
-    #- secure: "Mc+HCf8MmK28kZwaZ7YZox9qAlCP81pLLQVQMCH9yxCwFBUJlxO0+jsimoMhe6K9hi0WE1pS6Qa6+v0GdZ0+FmIlX1sQh5X64NCjCZHY3lcnFoPI8FSspgp0jRNd0Y1DPBWeLsuM2kmw9oaeQ8kqR7RYXLvkEHYfqbip1RkPRzfTJnB9OCdxWGfPrahD5idRyx2dfhw176vGF8h5aeTaajNvLhBGae2OerbEO0S4tf0jGUTVOJSPCJo2tcaCFIUcS+4fgNkqace4vtY7ZgJUstPpG6Ajj5lHFhfjEQrXlsn5Wv5eflvrO8XkXPGGC9Ttbqx/+zOwPxbjlneDEP6QyEfduxOzvLWM6TV8spNbI9z+X+dkRMovl5zgZrY9PzsM/cBcg3GS3rMUVrCHuJWNxcsX6oihKg4Dso8LZrvQXpmG4Ucgq4vbF+pzRI2frzuwW4SoddiKfz2cGrihkso0+nnuWe1a7NzjJzVR1oq6yA5GV4WWFIJT56OJ8Ta4y4dAKbgIhg7YFHfahfvc62B5BElxa9TtBIkud1sLDN2l6VEhso2sFpywQxbNXfLTV7GA4NIGAUPLf4qzBNE1kNkjaX6sdfY6MvzCyfWmui+KgZxRSZeUJ2bboP/0l0vuuDzLUlUUeqom8aGJfuQbXnGhld1vzqtvmc2DSLIEJ1v8V6c="
 notifications:
   email: false
 git:
@@ -35,15 +34,50 @@ before_install:
 jobs:
   include:
     - stage: test
-      name: ingress
+      name: k8s ingress using k3d k3s trafeik PathPrefixStrip
+      script:
+        - cd $TRAVIS_BUILD_DIR
+        #- wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+        - curl -s https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
+        - k3d create --name k3s --api-port 6551 --publish 80:80 --workers 1
+        - sleep 16s
+        #
+        - export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
+        - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+        - chmod +x ./kubectl
+        - mv ./kubectl ~/.local/bin/
+        - kubectl get pods --all-namespaces -o wide --watch &
+        #
+        - kubectl apply -f k8s/ -f k8s/ingress/ingress-trafeik-path-prefix-strip.yaml
+        - sleep 126s
+        - kubectl get all -o wide
+        - sleep 166s
+        #
+        - kubectl get all
+        - http :/find-all-greetings
+        - http :/find-all-greetings/ololo
+        - http :/actuator/health
+        - http :/actuator/info
+        - http :/greeting/actuator/health
+        - http :/greeting/actuator/info
+        - http :/hello/actuator/health
+        - http :/hello/actuator/info
+        #
+        - kubectl delete -f k8s/ -f k8s/ingress/ || echo 'cannot kubectl...'
+        - k3d stop --name=k3s -a                 || echo 'cannot k3d...'
+        - docker rm -f -v `docker ps -a -q`      || echo 'cannot docker...'
+        - cat ~/.config/k3d/k3s/kubeconfig.yaml  || echo 'cannot cat...'
+        - rm -rf ~/.config/k3d/k3s
+    - stage: test
+      name: k8s ingress using k3d k3s trafeik default backend
       script:
         - cd $TRAVIS_BUILD_DIR
         #- wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
         - curl -s https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
         - k3d create --name k3s --api-port 6551 --publish 80:80 --workers 3
-        - sleep 30s
-        - export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
+        - sleep 25s
         #
+        - export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
         - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
         - chmod +x ./kubectl
         - mv ./kubectl ~/.local/bin/
@@ -54,19 +88,22 @@ jobs:
         - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
         - echo 'https://kubernetes.github.io/ingress-nginx/deploy/#bare-metal'
         - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
-        - sleep 120s
-        #
-        - kubectl apply -f k8s/
-        - sleep 180s
+        - kubectl apply -f k8s/ -f k8s/ingress/ingress-trafeik-default-backend.yaml
+        - sleep 125s
         - kubectl get all -o wide
+        - sleep 165s
+        #
+        - kubectl get all
         - http :/actuator/health
         - http :/find-all-greetings
+        - http :/find-all-hello
+        - http :/info
         #
-        - kubectl delete -f k8s/                    || echo 'oops, kubectl failed.'
-        - k3d stop --name=k3s                       || echo 'oops, k3d failed.'
-        - docker rm -f -v `docker ps -a -q`         || echo 'oops, docker failed.'
-        - cat ~/.config/k3d/k3s/kubeconfig.yaml     || echo 'oops, cat failed.'
-        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml  || echo 'oops, rm failed.'
+        - kubectl delete -f k8s/ -f k8s/ingress/  || echo 'cannot kubectl...'
+        - k3d stop --name=k3s -a                  || echo 'cannot k3d...'
+        - docker rm -f -v `docker ps -a -q`       || echo 'cannot docker...'
+        - cat ~/.config/k3d/k3s/kubeconfig.yaml   || echo 'cannot cat...'
+        - rm -rf ~/.config/k3d/k3s
     - stage: test
       name: jib + k8s, k3s, k3d...
       script:
@@ -74,7 +111,7 @@ jobs:
         #- wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
         - curl -s https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
         - k3d create --name k3s --api-port 6551 --publish 30004:30004 --workers 2
-        - sleep 30s
+        - sleep 14s
         - export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
         #
         - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
@@ -90,23 +127,31 @@ jobs:
         #- skaffold --images daggerok/boot-skaffold
         #- skaffold dev &
         #
-        - kubectl apply -f k8s/hello-variants-service.yaml -f k8s/greeting-service.yaml -f k8s/frontend.yaml
-        - sleep 180s
-        - http :30004/actuator/health
-        - http :30004/find-all-greetings
+        - kubectl apply -f k8s/
+        - sleep 144s
+        - kubectl get all -o wide
+        - sleep 144s
         #
-        - kubectl delete -f k8s/                    || echo 'oops, kubectl failed...'
-        - k3d stop --name=k3s                       || echo 'oops, k3d failed...'
-        - docker rm -f -v `docker ps -a -q`         || echo 'oops, docker failed...'
-        - cat ~/.config/k3d/k3s/kubeconfig.yaml     || echo 'oops, cat failed...'
-        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml  || echo 'oops, rm failed...'
+        - kubectl get all
+        - http :30004/actuator/health
+        - http :30004/actuator/info
+        - http :30004/info
+        - http :30004/find-all-hello
+        - http :30004/find-all-greetings
+        - http :30004/
+        #
+        - kubectl delete -f k8s/                   || echo 'cannot kubectl...'
+        - k3d stop --name=k3s                      || echo oops
+        - docker rm -f -v `docker ps -a -q`        || echo oops
+        - cat ~/.config/k3d/k3s/kubeconfig.yaml    || echo oops
+        - rm -rf ~/.config/k3d/k3s/kubeconfig.yaml
     - stage: test
       name: jib + dkanejs
       before_script:
         - ./mvnw clean package jib:dockerBuild
         - ./mvnw -f docker-compose -Pup
         - wait_for 8001 8002 8003 8004
-        - sleep 30s
+        - sleep 33s
       script:
         - http :8001/actuator/info
         - http :8001/info

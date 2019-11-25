@@ -1,0 +1,31 @@
+---
+## Nginx rewrite-target works only in k8s based on Docker for Mac:
+#
+## Docker for mac requires:
+# kubectl pods --all-namespaces -l app.kubernetes.io/name=ingress-nginx --watch
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml ; kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml ; kubectl get pods --all-namespaces --watch & ; kubectl apply -f k8s/
+# ...
+# kubectl delete -f k8s/ ; docker rm -f -v `docker ps -a -q` ; rm -rf ~/.config/k3d/k3s
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: k8s-nginx-ingress-example-ingress-default-backend-and-rewrite-target-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  backend:
+    serviceName: frontend
+    servicePort: 8004
+  rules:
+    - http:
+        paths:
+          - path: /hello(/|$)(.*)
+            backend:
+              serviceName: hello-variants-service
+              servicePort: 8001
+          - path: /greeting(/|$)(.*)
+            backend:
+              serviceName: greeting-service
+              servicePort: 8003
+---

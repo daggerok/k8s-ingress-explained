@@ -6,7 +6,7 @@ metadata:
   labels:
     app: frontend
 spec:
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       name: frontend
@@ -52,6 +52,7 @@ metadata:
 spec:
   selector:
     app: frontend
+  sessionAffinity: None
   ports:
     - port: 8004
       protocol: TCP

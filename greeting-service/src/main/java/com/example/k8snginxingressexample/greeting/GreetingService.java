@@ -16,6 +16,7 @@ import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,11 +45,6 @@ class HelloServicesApi {
     final AppInfo appInfo;
     final Mono<RSocketRequester> rs;
 
-    @GetMapping("/info")
-    Mono<Map<String, String>> info() {
-        return Mono.just(appInfo.getInfo());
-    }
-
     @GetMapping({ "/find-all-greetings", "/find-all-greetings/{name}" })
     Flux<GreetingResponse> findAll(@PathVariable("name") Optional<String> maybeName) {
         return rs.flatMapMany(rr -> rr.route("find-all-hello")
@@ -56,6 +52,12 @@ class HelloServicesApi {
                                       .retrieveFlux(HelloResponse.class))
                  .map(hr -> String.format("%s, %s!", hr.getValue(), maybeName.orElse("Buddy")))
                  .map(GreetingResponse::of);
+    }
+
+    @GetMapping({ "/info/*", "/*" })
+    Mono<Map<String, String>> info(ServerWebExchange exchange) {
+        log.info("path: {}", exchange.getRequest().getPath());
+        return Mono.just(appInfo.getInfo());
     }
 }
 

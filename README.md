@@ -19,16 +19,17 @@ Reverse-proxy by nginx-ingress for spring-boot services in k8s with skaffold
    * [dkanejs docker-compose-maven-plugin](#dkanejs-docker-compose-maven-plugin)
      * [configuration](#dkanejs-configuration)
      * [build, run and test](#run-using-dkanejs-docker-compose-maven-plugin)
-1. [version: 0.0.3]()
-   * [kubernetes skaffold workflow](#k8s--skaffold)
-     * [k8s resources](#k8s)
-     * [skaffold docker for mac / windows](#skaffold)
-     * [k3s+k3d skaffold](#k3s-and-k3d)
+1. [0.0.3: kubernetes skaffold workflow](#k8s--skaffold)
+   * [k8s resources](#k8s)
+   * [skaffold docker for mac / windows](#skaffold)
 1. [version: 0.0.4]()
-   * [TODO: implement and configure k8s nginx ingress]()
+   * [k8s nginx ingress for Docker for Mac / Windows](#k8s-nginx-ingress-for-docker-for-mac)
+     * [nginx ingress default backend](#nginx-ingress-default-backend)
+     * [nginx ingress rewrite-target](#nginx-ingress-rewrite-target)
+   * [k8s trafeik ingress for k3d k3s](#k8s-trafeik-ingress-for-k3d-k3s)
+     * [trafeik ingress default backend](#trafeik-ingress-default-backend)
+     * [trafeik ingress PathPrefixStrip](#trafeik-ingress-pathprefixstrip)
 1. [resources](#resources)
-
-Status: IN PROGRESS
 
 ## features
 
@@ -271,21 +272,131 @@ http :30004/find-all-greetings
 skaffold delete
 ```
 
-### k3s and k3d
+## k8s nginx ingress for Docker for Mac
+
+### nginx ingress default backend
+
+Default backend for fronted application or main micro-services gateway,
+see `k8s/ingress/ingress-docker-for-mac-nginx-default-backend.yaml` k8s resources file for details
 
 ```bash
-brew reinstall k3d
-k3d create --name k3s --api-port 6551 --publish 30004:30004 --workers 2
-export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
-#kubectl cluster-info
-skaffold dev
-http :30004/find-all-greetings
-k3d stop --name=k3s
-#docker rm -f -v `docker ps -aq`
-rm -rf ~/.config/k3d/k3s/kubeconfig.yaml
+# enable Kubernetes cluster in DOcker for Mac / Windows...
+# watch pods...
+kubectl get pods --all-namespaces -o wide -w &
+# deploy cloud native micro-services apps and ingress
+kubectl apply -f k8s/
+kubectl apply -f k8s/ingress/ingress-docker-for-mac-nginx-default-backend.yaml
+# wait more...
+sleep 120s
+# test if everything is working
+http :/actuator/health
+http :/actuator/info
+http :/
+http :/info
+http :/find-all-hello
+http :/find-all-greetings
+http :/find-all-greetings/ololo-trololo
+# cleanup
+kubectl delete -f k8s/
+kubectl delete -f k8s/ingress/
 ```
 
-Check [.travis.yml](.travis.yml) for details
+### nginx ingress rewrite-target
+
+Default backend with some rewrite targets,
+see `k8s/ingress/ingress-docker-for-mac-nginx-rewrite-target.yaml` k8s resources file for details
+
+```bash
+# enable Kubernetes cluster in DOcker for Mac / Windows...
+# watch pods...
+kubectl get pods --all-namespaces -o wide -w &
+# deploy cloud native micro-services apps and ingress
+kubectl apply -f k8s/
+kubectl apply -f k8s/ingress/ingress-docker-for-mac-nginx-rewrite-target.yaml
+# wait more...
+sleep 120s
+# test if everything is working
+http :/actuator/health
+http :/actuator/info
+http :/
+http :/info
+http :/find-all-hello
+http :/find-all-greetings
+http :/find-all-greetings/ololo-trololo
+# cleanup
+kubectl delete -f k8s/
+kubectl delete -f k8s/ingress/
+```
+
+## k8s trafeik ingress for k3d k3s
+
+### trafeik ingress default backend
+
+Default backend for fronted application or main micro-services gateway,
+see `k8s/ingress/ingress-trafeik-default-backend.yaml` k8s resources file for details
+
+```bash
+# create k3s k8s cluster by using k3d tool (k3s in docker) with published port: 80
+k3d create --name k3s --api-port 6551 --publish 80:80 --workers 1
+# wait few moments
+sleep 5s
+# point kubectl to created k3s
+export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
+# watch pods
+kubectl get pods --all-namespaces -o wide -w &
+# deploy cloud native micro-services apps and ingress
+kubectl apply -f k8s/
+kubectl apply -f k8s/ingress/ingress-trafeik-default-backend.yaml
+# wait more...
+sleep 120s
+# test if everything is working
+http :/actuator/health
+http :/actuator/info
+http :/
+http :/info
+http :/find-all-hello
+http :/find-all-greetings
+http :/find-all-greetings/ololo-trololo
+# cleanup
+kubectl delete -f k8s/
+kubectl delete -f k8s/ingress/
+k3d stop --name=k3s -a
+docker rm -f -v `docker ps -a -q`
+rm -rf ~/.config/k3d/k3s
+```
+
+### trafeik ingress PathPrefixStrip
+
+Default backend with some rewrite targets,
+see `k8s/ingress/ingress-trafeik-path-prefix-strip.yaml` k8s resources file for details
+
+```bash
+# create k3s k8s cluster by using k3d tool (k3s in docker) with published port: 80
+k3d create --name k3s --api-port 6551 --publish 80:80 --workers 1
+# wait few moments
+sleep 5s
+# point kubectl to created k3s
+export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
+# watch pods
+kubectl get pods --all-namespaces -o wide -w &
+# deploy cloud native micro-services apps and ingress
+kubectl apply -f k8s/
+kubectl apply -f k8s/ingress/ingress-trafeik-path-prefix-strip.yaml
+# wait more...
+sleep 120s
+# test if everything is working
+http :/info
+http :/greeting/info
+http :/hello/info
+# cleanup
+kubectl delete -f k8s/
+kubectl delete -f k8s/ingress/
+k3d stop --name=k3s -a
+docker rm -f -v `docker ps -a -q`
+rm -rf ~/.config/k3d/k3s
+```
+
+Check [k8s](./k8s/) folder and [.travis.yml](.travis.yml) file for details...
 
 ## release
 
@@ -296,14 +407,22 @@ Check [.travis.yml](.travis.yml) for details
 
 ## resources
 
+* [trafeik-ingress rewrite](https://docs.traefik.io/v1.7/user-guide/kubernetes/#path-based-routing)
+* [GitHub: rancher/k3d](https://github.com/rancher/k3d)
+* [GitHub: rancher/k3s](https://github.com/rancher/k3s)
+* [k3s reference](https://rancher.com/docs/k3s/latest/en/)
+* [nginx-ingress rewrite](https://kubernetes.github.io/ingress-nginx/examples/rewrite/)
 * [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 * [nginx-ingress: common](https://kubernetes.github.io/ingress-nginx/deploy/#prerequisite-generic-deployment-command)
 * [nginx-ingress: docker for mac / windows](https://kubernetes.github.io/ingress-nginx/deploy/#docker-for-mac)
 * [nginx-ingress: bare-metal](https://kubernetes.github.io/ingress-nginx/deploy/#bare-metal)
 * [k8s ingress controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
 * [k8s ingress minikube](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/)
+* [k8s service type: LoadBalancer](https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer)
+* [k8s service type: NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)
 * [Quarkus skaffold](https://medium.com/@dav.poletti/quarkus-development-mode-with-kubernetes-and-skaffold-ea17621e168)
 * [multi skaffold](https://github.com/GoogleContainerTools/skaffold/blob/master/examples/jib-multimodule/skaffold.yaml)
+* [Spring WebFlux WebFilter](https://www.baeldung.com/spring-webflux-filters#1-webfilter)
 * [spring-boot k8s](https://dzone.com/articles/developing-a-spring-boot-application-for-kubernete-4)
 * [spring k8s](https://dzone.com/articles/quick-guide-to-microservices-with-kubernetes-sprin)
 * [fabric8 docker-compose wait](https://github.com/fabric8io/docker-maven-plugin/issues/1118)
