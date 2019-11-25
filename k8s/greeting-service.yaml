@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: greeting-service
-          image: daggerok/k8s-nginx-ingress-example-greeting-service
+          image: daggerok/k8s-ingress-explained-greeting-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8003

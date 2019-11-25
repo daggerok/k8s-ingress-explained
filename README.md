@@ -1,5 +1,5 @@
-# k8s nginx-ingress [![Build Status](https://travis-ci.org/daggerok/k8s-nginx-ingress-example.svg?branch=master)](https://travis-ci.org/daggerok/k8s-nginx-ingress-example)
-Reverse-proxy by nginx-ingress for spring-boot services in k8s with skaffold
+# k8s ingress explained [![Build Status](https://travis-ci.org/daggerok/k8s-ingress-explained.svg?branch=master)](https://travis-ci.org/daggerok/k8s-ingress-explained)
+Reverse-proxy by nginx / traefik ingress for spring-boot services in k8s with skaffold
 
 ## table of content
 1. [version: 0.0.1]()
@@ -151,8 +151,8 @@ then build jib image and run command:
 ```bash
 docker run -it \
     --entrypoint /busybox/sh \
-    --network docker_k8s-nginx-ingress-example \
-    daggerok/k8s-nginx-ingress-example-frontend:latest
+    --network docker_k8s-ingress-explained \
+    daggerok/k8s-ingress-explained-frontend:latest
 ```
 
 ## fabric8
