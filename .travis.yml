@@ -34,7 +34,7 @@ before_install:
 jobs:
   include:
     - stage: test
-      name: k8s ingress using k3d k3s trafeik PathPrefixStrip
+      name: k8s ingress using k3d k3s traefik PathPrefixStrip
       script:
         - cd $TRAVIS_BUILD_DIR
         #- wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
@@ -48,7 +48,7 @@ jobs:
         - mv ./kubectl ~/.local/bin/
         - kubectl get pods --all-namespaces -o wide --watch &
         #
-        - kubectl apply -f k8s/ -f k8s/ingress/ingress-trafeik-path-prefix-strip.yaml
+        - kubectl apply -f k8s/ -f k8s/ingress/ingress-traefik-path-prefix-strip.yaml
         - sleep 126s
         - kubectl get all -o wide
         - sleep 166s
@@ -69,7 +69,7 @@ jobs:
         - cat ~/.config/k3d/k3s/kubeconfig.yaml  || echo 'cannot cat...'
         - rm -rf ~/.config/k3d/k3s
     - stage: test
-      name: k8s ingress using k3d k3s trafeik default backend
+      name: k8s ingress using k3d k3s traefik default backend
       script:
         - cd $TRAVIS_BUILD_DIR
         #- wget -q -O - https://raw.githubusercontent.com/rancher/k3d/master/install.sh | bash
@@ -88,7 +88,7 @@ jobs:
         - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
         - echo 'https://kubernetes.github.io/ingress-nginx/deploy/#bare-metal'
         - kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
-        - kubectl apply -f k8s/ -f k8s/ingress/ingress-trafeik-default-backend.yaml
+        - kubectl apply -f k8s/ -f k8s/ingress/ingress-traefik-default-backend.yaml
         - sleep 125s
         - kubectl get all -o wide
         - sleep 165s

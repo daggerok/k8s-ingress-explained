@@ -26,9 +26,9 @@ Reverse-proxy by nginx-ingress for spring-boot services in k8s with skaffold
    * [k8s nginx ingress for Docker for Mac / Windows](#k8s-nginx-ingress-for-docker-for-mac)
      * [nginx ingress default backend](#nginx-ingress-default-backend)
      * [nginx ingress rewrite-target](#nginx-ingress-rewrite-target)
-   * [k8s trafeik ingress for k3d k3s](#k8s-trafeik-ingress-for-k3d-k3s)
-     * [trafeik ingress default backend](#trafeik-ingress-default-backend)
-     * [trafeik ingress PathPrefixStrip](#trafeik-ingress-pathprefixstrip)
+   * [k8s traefik ingress for k3d k3s](#k8s-traefik-ingress-for-k3d-k3s)
+     * [traefik ingress default backend](#traefik-ingress-default-backend)
+     * [traefik ingress PathPrefixStrip](#traefik-ingress-pathprefixstrip)
 1. [resources](#resources)
 
 ## features
@@ -328,12 +328,12 @@ kubectl delete -f k8s/
 kubectl delete -f k8s/ingress/
 ```
 
-## k8s trafeik ingress for k3d k3s
+## k8s traefik ingress for k3d k3s
 
-### trafeik ingress default backend
+### traefik ingress default backend
 
 Default backend for fronted application or main micro-services gateway,
-see `k8s/ingress/ingress-trafeik-default-backend.yaml` k8s resources file for details
+see `k8s/ingress/ingress-traefik-default-backend.yaml` k8s resources file for details
 
 ```bash
 # create k3s k8s cluster by using k3d tool (k3s in docker) with published port: 80
@@ -346,7 +346,7 @@ export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
 kubectl get pods --all-namespaces -o wide -w &
 # deploy cloud native micro-services apps and ingress
 kubectl apply -f k8s/
-kubectl apply -f k8s/ingress/ingress-trafeik-default-backend.yaml
+kubectl apply -f k8s/ingress/ingress-traefik-default-backend.yaml
 # wait more...
 sleep 120s
 # test if everything is working
@@ -365,10 +365,10 @@ docker rm -f -v `docker ps -a -q`
 rm -rf ~/.config/k3d/k3s
 ```
 
-### trafeik ingress PathPrefixStrip
+### traefik ingress PathPrefixStrip
 
 Default backend with some rewrite targets,
-see `k8s/ingress/ingress-trafeik-path-prefix-strip.yaml` k8s resources file for details
+see `k8s/ingress/ingress-traefik-path-prefix-strip.yaml` k8s resources file for details
 
 ```bash
 # create k3s k8s cluster by using k3d tool (k3s in docker) with published port: 80
@@ -381,7 +381,7 @@ export KUBECONFIG="$(k3d get-kubeconfig --name='k3s')"
 kubectl get pods --all-namespaces -o wide -w &
 # deploy cloud native micro-services apps and ingress
 kubectl apply -f k8s/
-kubectl apply -f k8s/ingress/ingress-trafeik-path-prefix-strip.yaml
+kubectl apply -f k8s/ingress/ingress-traefik-path-prefix-strip.yaml
 # wait more...
 sleep 120s
 # test if everything is working
@@ -407,7 +407,7 @@ Check [k8s](./k8s/) folder and [.travis.yml](.travis.yml) file for details...
 
 ## resources
 
-* [trafeik-ingress rewrite](https://docs.traefik.io/v1.7/user-guide/kubernetes/#path-based-routing)
+* [traefik-ingress rewrite](https://docs.traefik.io/v1.7/user-guide/kubernetes/#path-based-routing)
 * [GitHub: rancher/k3d](https://github.com/rancher/k3d)
 * [GitHub: rancher/k3s](https://github.com/rancher/k3s)
 * [k3s reference](https://rancher.com/docs/k3s/latest/en/)
