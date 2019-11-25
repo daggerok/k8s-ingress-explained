@@ -26,14 +26,14 @@
         <developerConnection>scm:git:git@github.com:daggerok/k8s-ingress-explained.git</developerConnection>
         <connection>scm:git:https://github.com/daggerok/k8s-ingress-explained.git</connection>
         <url>https://github.com/daggerok/k8s-ingress-explained</url>
-        <tag>HEAD</tag>
+        <tag>0.0.4</tag>
     </scm>
 
     <modelVersion>4.0.0</modelVersion>
     <name>${project.artifactId}</name>
     <groupId>com.example.k8snginxingressexample</groupId>
     <artifactId>k8s-ingress-explained</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
     <packaging>pom</packaging>
 
     <properties>
