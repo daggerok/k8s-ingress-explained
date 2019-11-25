@@ -410,10 +410,10 @@ rm -rf ~/.config/k3d/k3s
 
 Check [k8s](./k8s/) folder and [.travis.yml](.travis.yml) file for details...
 
-## release
+## release and publish docker hub
 
 ```bash
-./mvnw release:clean release:prepare release:perform --batch-mode
+./mvnw release:clean release:prepare release:perform --batch-mode ; ./mvnw package jib:build
 # ./mvnw release:rollback
 ```
 
