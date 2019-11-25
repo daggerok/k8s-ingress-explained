@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: daggerok/k8s-nginx-ingress-example-frontend
+          image: daggerok/k8s-ingress-explained-frontend
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8004

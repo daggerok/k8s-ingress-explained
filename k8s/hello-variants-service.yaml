@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: hello-variants-service
-          image: daggerok/k8s-nginx-ingress-example-hello-variants-service
+          image: daggerok/k8s-ingress-explained-hello-variants-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8001

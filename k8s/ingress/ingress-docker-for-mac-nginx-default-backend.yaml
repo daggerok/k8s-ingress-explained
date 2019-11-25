@@ -8,7 +8,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: k8s-nginx-ingress-example-default-backend-or-single-service-ingress
+  name: k8s-ingress-explained-default-backend-or-single-service-ingress
 spec:
   backend:
     serviceName: frontend

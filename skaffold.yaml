@@ -1,10 +1,10 @@
 apiVersion: skaffold/v1
 kind: Config
 metadata:
-  name: k8s-nginx-ingress-example
+  name: k8s-ingress-explained
 build:
   artifacts:
-    - image: daggerok/k8s-nginx-ingress-example-hello-variants-service
+    - image: daggerok/k8s-ingress-explained-hello-variants-service
       jib:
         project: hello-variants-service
         type: maven
@@ -12,7 +12,7 @@ build:
           - -e
           - -P
           - "!dev"
-    - image: daggerok/k8s-nginx-ingress-example-greeting-service
+    - image: daggerok/k8s-ingress-explained-greeting-service
       jib:
         project: greeting-service
         type: maven
@@ -20,7 +20,7 @@ build:
           - -e
           - -P
           - "!dev"
-    - image: daggerok/k8s-nginx-ingress-example-frontend
+    - image: daggerok/k8s-ingress-explained-frontend
       jib:
         project: frontend
         type: maven

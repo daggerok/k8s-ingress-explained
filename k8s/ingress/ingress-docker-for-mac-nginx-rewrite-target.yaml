@@ -10,7 +10,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: k8s-nginx-ingress-example-ingress-default-backend-and-rewrite-target-ingress
+  name: k8s-ingress-explained-ingress-default-backend-and-rewrite-target-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
