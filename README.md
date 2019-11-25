@@ -1,5 +1,5 @@
 # k8s ingress explained [![Build Status](https://travis-ci.org/daggerok/k8s-ingress-explained.svg?branch=master)](https://travis-ci.org/daggerok/k8s-ingress-explained)
-Reverse-proxy by nginx / traefik ingress for spring-boot services in k8s with skaffold
+Expose kubernetes services with nginx / traefik ingress for spring-boot services in k8s with skaffold
 
 ## table of content
 1. [version: 0.0.1]()
