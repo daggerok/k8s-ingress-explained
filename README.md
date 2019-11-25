@@ -5,8 +5,8 @@ Expose kubernetes services with nginx / traefik ingress for spring-boot services
                  +---------------------------------------------+
                  |                        +-------+            |
                  |      K8S               | hello |<---+       |
- \O_      +---------+                     +-------+    |       |
-  |  <--> | Ingress | <---+                            |       |
+  O       +---------+                     +-------+    |       |
+ /|\ <--> | Ingress | <---+                            |       |
  / \      +---------+     |    +----------+      +----------+  |
                  |        +--> | frontend | ---> | greeting |  |
                  |             +----------+      +----------+  |
