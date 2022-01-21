@@ -45,7 +45,7 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
 
-        <h2.version>1.4.199</h2.version>
+        <h2.version>2.1.210</h2.version>
         <vavr.version>0.10.2</vavr.version>
         <r2dbc.version>0.8.0.RC2</r2dbc.version>
         <Semantic-UI.version>2.4.1</Semantic-UI.version>
